@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="out_css/style.css">
+    <title>My Weather Widget</title>
+</head>
+<body>
+    <div class="widget-wrapper">
+        <header class="header">
+            <!-- <h1>write a city name, to find its weather</h1> -->
+            <input type="text" data-widget-input="city-name-input" class="input" placeholder="city name">
+        </header>
+        <main class="main-content">
+            <section class="current-weather-block" data-widget-info="current-weather-block"></section>
+            <section class="future-weather-block" data-widget-info="future-weather-block"></section>
+            <script src="main.js"></script>
+        </main>
+    </div>
+</body>
+</html>
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my Weather Widget</title>
+</head>
+<body style="margin:0 auto; width:50%;">
+    <header>
+        <h1><span >write a city name, to find its weather</span></h1>
+        <input type="text" name="city-name-input" id="city-name-input" placeholder="city name" style="width: 100%">
+    </header>
+    <main class="main-content">
+        <section class="current-temp-block">
+            <h2 >
+                <div id="city-name">Paris</div>
+                <div id="city-current-temperature">5 C</div>
+            </h2>
+            <div id="city-current-temperature-description">clodly</div>
+            <div id="city-current-temperature-icon">
+                <img src="https://openweathermap.org/img/wn/04n@4x.png" alt="city-current-temperature-icon">
+            </div>
+            <div id="city-temperature-max">
+                max: <span>15C</span>
+            </div>
+            <div id="city-temperature-min">
+                max: <span>0C</span>
+            </div>
+        </section>
+        <section class="future-days-block">
+            <div id="next-day">
+                <hr>
+                <h3 id="next-day__week-day">THU</h3>
+                <h4 id="next-day__temp-day">Day<span> 5C</span></h4>
+                <h4 id="next-day__temp-night">Night<span> 0C</span></h4>
+                <p id="next-day__temp-description">clodly</p>
+                <div id="next-day__temp-icon">
+                    <img src="https://openweathermap.org/img/wn/04n@4x.png" alt="city-current-temperature-icon">
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html> -->
