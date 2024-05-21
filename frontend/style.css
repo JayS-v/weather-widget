@@ -3,8 +3,9 @@ body {
   display: flex;
   justify-content: center;
   font-family: "Roboto", sans-serif;
-  align-items: center;
-  min-height: 80vh;
+  padding-top: 20px;
+  /* align-items: center; */
+  /* min-height: 80vh; */
   margin: 0;
 }
 
@@ -16,6 +17,7 @@ body {
   align-items: center;
   border-radius: 20px;
   padding: 10px;
+  transform: translateY(250px);
 }
 
 .header {

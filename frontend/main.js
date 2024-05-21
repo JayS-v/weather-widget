@@ -1,3 +1,19 @@
+/*
+ISC License
+
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*/
+
 const input = document.querySelector('[data-widget-input="city-name-input"]');
 
 input.addEventListener('input', () => {
@@ -78,7 +94,7 @@ const clickAutocompleteHandler = async (event) => {
 }
 
 const getLocation = async (cityName) => {
-    const server = `https://api.opencagedata.com/geocode/v1/json?q=URI-ENCODED-${encodeURIComponent(cityName)}&key=240767d96b804d49a1ba1e30b6044633`;
+    const server = `/weather/location?city=${encodeURIComponent(cityName)}`
     const response = await fetch(server, {
         method: 'GET',
     });
@@ -115,8 +131,8 @@ const loadWeather = async (cityLocation) => {
             weatherNextDays: [],
         }
 
-        const serverCurrentWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${cityLatitude}&lon=${cityLongitude}&appid=59c96758adac4972fdb7d5d0d768126d&units=metric`;
-        const serverFutureWeather = ` http://api.openweathermap.org/data/2.5/forecast/daily?lat=${cityLatitude}&lon=${cityLongitude}&cnt=16&appid=bd5e378503939ddaee76f12ad7a97608&units=metric`;
+        const serverCurrentWeather = `/weather/current?lat=${cityLatitude}&lon=${cityLongitude}`;
+        const serverFutureWeather = `/weather/forecast?lat=${cityLatitude}&lon=${cityLongitude}`;
 
         const [currentWeatherResponse, futureWeatherResponse] = await Promise.all([
             fetch(serverCurrentWeather, { method: 'GET' }),
@@ -191,6 +207,7 @@ const loadWeather = async (cityLocation) => {
 };
 
 const renderWeather = (city, data) => {
+    document.querySelector('.widget-wrapper').style.transform = "none";
 
     console.log(city)
     console.log(data)
@@ -234,9 +251,7 @@ const renderWeather = (city, data) => {
     const renderFutureWeather = () => {
         const futureWeatherBlock = document.querySelector('[data-widget-info="future-weather-block"]');
         const nextDaysDivs = document.querySelectorAll('.next-days-divs');
-
         
-       
         if (nextDaysDivs.length > 0) {
             nextDaysDivs.forEach(
                 nextDaysDiv => nextDaysDiv.remove()
@@ -274,8 +289,3 @@ const renderWeather = (city, data) => {
     renderCurrentWeather();
     renderFutureWeather();
 }
-
-
-
-
-

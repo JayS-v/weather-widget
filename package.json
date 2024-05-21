@@ -1,0 +1,9 @@
+{
+  "name": "weather-widget-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --watch --env-file=.env server.js"
+  },
+  "license": "ISC"
+}
