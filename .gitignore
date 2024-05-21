@@ -3,4 +3,5 @@
 
 # Dependencies
 node_modules/
-.vercel
+.vercel/project.json
+

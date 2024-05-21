@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>My Weather Widget</title>
+</head>
+<body>
+    <div class="widget-wrapper">
+        <header class="header">
+            <!-- <h1>write a city name, to find its weather</h1> -->
+            <input type="text" data-widget-input="city-name-input" class="input" placeholder="city name">
+        </header>
+        <main class="main-content">
+            <section class="current-weather-block" data-widget-info="current-weather-block"></section>
+            <section class="future-weather-block" data-widget-info="future-weather-block"></section>
+            <script src="main.js"></script>
+        </main>
+    </div>
+</body>
+</html>
