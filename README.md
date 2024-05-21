@@ -13,7 +13,6 @@ The backend server provides weather data and location services, while the fronte
 - [Installation](#installation)
 - [Project Structure](#project-structure)
 - [Environment Variables](#environment-variables)
-- [Obtaining API Keys](#obtaining-api-keys)
 
 ## Frontend
 
