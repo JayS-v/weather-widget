@@ -19,14 +19,23 @@ The backend server provides weather data and location services, while the fronte
 1. Navigate to `http://localhost:8000` in your web browser.
 2. Enter a city name in the input field to get the current weather and the weather forecast for the next 16 days
 
+You can also test it here: [https://my-weather-widget.vercel.app](https://my-weather-widget.vercel.app)
+
 ![Weather widget screen](https://api.jayseyidov.com/weather-widget-frontend/weather-widget-screen.gif)
 
 ## Backend API Endpoints
-The backend server provides the following API endpoints:
+The backend server provides the following API endpoints. 
 
 - `GET /weather/location?city=<cityName>`: Fetches the location coordinates for the specified city.
 - `GET /weather/current?lat=<latitude>&lon=<longitude>`: Fetches the current weather data for the specified coordinates.
 - `GET /weather/forecast?lat=<latitude>&lon=<longitude>`: Fetches the weather forecast for the next 16 days for the specified coordinates.
+
+**These can be tested on my deployed application** at [https://my-weather-widget.vercel.app](https://my-weather-widget.vercel.app) : 
+
+Example Request:
+```
+https://my-weather-widget.vercel.app/weather/current?lat=51.5074&lon=-0.1278
+```
 
 ## Installation
 
