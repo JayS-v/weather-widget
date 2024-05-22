@@ -21,7 +21,7 @@ The backend server provides weather data and location services, while the fronte
 
 You can also test it here: [https://my-weather-widget.vercel.app](https://my-weather-widget.vercel.app)
 
-![Weather widget screen](https://api.jayseyidov.com/weather-widget-frontend/weather-widget-screen.gif)
+![Weather widget screen](https://cloud.jayseyidov.com/weather-widget-frontend/weather-widget-screen.gif)
 
 ## Backend API Endpoints
 The backend server provides the following API endpoints. 
