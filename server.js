@@ -112,7 +112,7 @@ class WeatherServer {
             pathname = 'index.html';
         }
 
-        const filePath = path.join(__dirname, 'frontend', pathname);
+        const filePath = path.join(__dirname, 'public', pathname);
 
         fs.readFile(filePath, (err, data) => {
             if (err) {
