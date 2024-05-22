@@ -153,3 +153,5 @@ class WeatherServer {
 
 const weatherServer = new WeatherServer(PORT);
 weatherServer.start();
+
+module.exports = weatherServer;
