@@ -14,142 +14,70 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
 const path = require('path');
-
+const app = express();
 const PORT = 8000;
 
-class WeatherServer {
-    constructor(port) {
-        this.port = port;
-        this.server = http.createServer((req, res) => this.handleRequest(req, res));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/weather/location', async (req, res) => {
+    try {
+        const cityName = req.query.city;
+        if (!cityName) throw new Error('City name required');
+
+        const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(cityName)}&key=${process.env.OPEN_CAGE_API_KEY}`);
+        if (!response.ok) throw new Error('Error fetching location data');
+
+        const data = await response.json();
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
+});
 
-    start() {
-        this.server.listen(this.port, () => {
-            console.log(`Server running at http://localhost:${this.port}`);
-        });
+app.get('/weather/current', async (req, res) => {
+    try {
+        const lat = req.query.lat;
+        if (!lat) throw new Error('Latitude is required');
+
+        const lon = req.query.lon;
+        if (!lon) throw new Error('Longitude is required');
+
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`);
+        if (!response.ok) throw new Error('Error fetching current weather data');
+
+        const data = await response.json();
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+});
 
-    async handleRequest(req, res) {
-        const reqUrl = new URL(req.url, `http://${req.headers.host}/`);
-        const method = req.method;
+app.get('/weather/forecast', async (req, res) => {
+    try {
+        const lat = req.query.lat;
+        if (!lat) throw new Error('Latitude is required');
 
-        if (reqUrl.pathname.startsWith('/weather')) {
-            this.handleWeatherAPI(reqUrl, method, res);
-        } else {
-            this.serveStaticFiles(reqUrl.pathname, res);
-        }
+        const lon = req.query.lon;
+        if (!lon) throw new Error('Longitude is required');
+
+        const response = await fetch(`http://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=16&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`);
+        if (!response.ok) throw new Error('Error fetching forecast weather data');
+
+        const data = await response.json();
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+});
 
-    async handleWeatherAPI(reqUrl, method, res) {
-        if (reqUrl.pathname === '/weather/location' && method === 'GET') {
-            await this.handleLocationRequest(reqUrl.searchParams, res);
-        } else if (reqUrl.pathname === '/weather/current' && method === 'GET') {
-            await this.handleCurrentWeatherRequest(reqUrl.searchParams, res);
-        } else if (reqUrl.pathname === '/weather/forecast' && method === 'GET') {
-            await this.handleForecastRequest(reqUrl.searchParams, res);
-        } else {
-            this.sendResponse(res, 404, { error: 'Route not found' });
-        }
-    }
+app.get('*', (req, res) => {
+    res.status(404).json({ error: 'Route not found' });
+});
 
-    async handleLocationRequest(searchParams, res) {
-        try {
-            const cityName = searchParams.get('city')
-            if (!cityName) throw new Error('City name required');
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
 
-            const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(cityName)}&key=${process.env.OPEN_CAGE_API_KEY}`);
-            if (!response.ok) throw new Error('Error fetching location data');
-
-            const data = await response.json();
-            this.sendResponse(res, 200, data);
-        } catch (error) {
-            this.sendResponse(res, 500, { message: error.message });
-        }
-    }
-
-    async handleCurrentWeatherRequest(searchParams, res) {
-        try {
-            const lat = searchParams.get('lat');
-            if (!lat) throw new Error('Latitude is required');
-
-            const lon = searchParams.get('lon')
-            if (!lon) throw new Error('Longitude is required');
-
-
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`);
-            if (!response.ok) throw new Error('Error fetching current weather data');
-
-            const data = await response.json();
-            this.sendResponse(res, 200, data);
-        } catch (error) {
-            this.sendResponse(res, 500, { error: error.message });
-        }
-    }
-
-    async handleForecastRequest(searchParams, res) {
-        try {
-            const lat = searchParams.get('lat');
-            if (!lat) throw new Error('Latitude is required');
-
-            const lon = searchParams.get('lon')
-            if (!lon) throw new Error('Longitude is required');
-
-            const response = await fetch(`http://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=16&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`);
-            if (!response.ok) throw new Error('Error fetching forecast weather data');
-
-            const data = await response.json();
-            this.sendResponse(res, 200, data);
-        } catch (error) {
-            this.sendResponse(res, 500, { error: error.message });
-        }
-    }
-
-    serveStaticFiles(pathname, res) {
-        if (pathname === '/') {
-            pathname = 'index.html';
-        }
-
-        const filePath = path.join(__dirname, 'public', pathname);
-
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                this.sendResponse(res, 404, { error: 'Route not found' });
-            } else {
-                const contentType = this.getContentType(filePath);
-                res.writeHead(200, { 'Content-Type': contentType });
-                res.end(data);
-            }
-        });
-    }
-
-    sendResponse(res, statusCode, data) {
-        res.writeHead(statusCode, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(data));
-    }
-
-    getContentType(filePath) {
-        const extname = path.extname(filePath);
-        switch (extname) {
-            case '.html':
-                return 'text/html';
-            case '.css':
-                return 'text/css';
-            case '.js':
-                return 'text/javascript';
-            case '.json':
-                return 'application/json';
-            case '.png':
-                return 'image/png';
-            case '.jpg':
-                return 'image/jpg';
-            default:
-                return 'text/plain';
-        }
-    }
-}
-
-const weatherServer = new WeatherServer(PORT);
-weatherServer.start();
+module.exports = app;
