@@ -4,7 +4,7 @@
 ## Description
 This repository contains the **backend** and **frontend** code for a lightweight weather widget application built with **vanilla JavaScript/Node.js without any external dependencies**. 
 
-The backend server provides weather data and location services, while the frontend displays the current and future weather for a specified location. 
+The backend server provides weather data and location services, while the frontend provides automatic city suggestions during typing and displays the current and future weather for a specified location. 
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ The backend server provides weather data and location services, while the fronte
 ## Frontend
 
 1. Navigate to `http://localhost:8000` in your web browser.
-2. Enter a city name in the input field to get the current weather and the weather forecast for the next 16 days
+2. Enter a city name in the input field to get the current weather and the weather forecast for the next 7 days
 
 You can also test it here: [https://my-weather-widget.vercel.app](https://my-weather-widget.vercel.app)
 
