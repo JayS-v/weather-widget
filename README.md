@@ -2,7 +2,9 @@
 ![Repo Size](https://img.shields.io/github/repo-size/JayS-v/weather-widget)
 
 ## Description
-This repository contains the **backend** and **frontend** code for a lightweight weather widget application built with **vanilla JavaScript/Node.js without any external dependencies**. 
+This repository contains the **backend** and **frontend** code for a lightweight weather widget application built with **vanilla JavaScript/Node.js**. 
+
+**Standalone code with no libraries or external dependencies**. 
 
 The backend server provides weather data and location services, while the frontend provides automatic city suggestions during typing and displays the current and future weather for a specified location. 
 
